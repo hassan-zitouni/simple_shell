@@ -2,31 +2,31 @@
 
 /**
  * get_environ - returns the string array copy of our environ
- * @in: Structure containing potential arguments. Used to maintain
+ * @info: Structure containing potential arguments. Used to maintain
  *          constant function prototype.
  * Return: Always 0
  */
-char **get_environ(info_t *in)
+char **get_environ(info_t *info)
 {
-	if (!in->environ || in->env_changed)
+	if (!info->environ || info->env_changed)
 	{
-		in->environ = list_to_strings(in->env);
-		in->env_changed = 0;
+		info->environ = list_to_strings(info->env);
+		info->env_changed = 0;
 	}
 
-	return (in->environ);
+	return (info->environ);
 }
 
 /**
  * _unsetenv - Remove an environment variable
- * @in: Structure containing potential arguments. Used to maintain
+ * @info: Structure containing potential arguments. Used to maintain
  *        constant function prototype.
  *  Return: 1 on delete, 0 otherwise
  * @var: the string env var property
  */
-int _unsetenv(in_t *in, char *var)
+int _unsetenv(info_t *info, char *var)
 {
-	list_t *node = in->env;
+	list_t *node = info->env;
 	size_t i = 0;
 	char *p;
 
@@ -38,15 +38,15 @@ int _unsetenv(in_t *in, char *var)
 		p = starts_with(node->str, var);
 		if (p && *p == '=')
 		{
-			in->env_changed = delete_node_at_index(&(in->env), i);
+			info->env_changed = delete_node_at_index(&(info->env), i);
 			i = 0;
-			node = in->env;
+			node = info->env;
 			continue;
 		}
 		node = node->next;
 		i++;
 	}
-	return (in->env_changed);
+	return (info->env_changed);
 }
 
 /**
